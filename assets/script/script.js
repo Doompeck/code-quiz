@@ -1,4 +1,3 @@
-var timeEl;
 // Question and Answer Array
 var javaQuestions = [
    //Initial object structure
@@ -7,13 +6,22 @@ var javaQuestions = [
         answers:{
             a: "",
             b: "",
-            c: ""
+            c: "",
+            d: ""
         },
         correctAnswer: ""
     },
 
 ];
 
+// 90 second timer
+var timeCountdown = 90;
+var timer = setInterval(function() {
+    timeCountdown--;
+    document.getElementById("timer").textContent = timeCountdown;
+    if(timeCountdown <= 0)
+    clearInterval(timer);
+}, 1000);
 
 
 
