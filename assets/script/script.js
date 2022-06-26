@@ -1,3 +1,11 @@
+//  selecting html elements
+var question = document.getElementById("question");
+var choiceA = document.getElementById("a");
+var choiceB = document.getElementById("b");
+var choiceC = document.getElementById("c");
+var choiceD = document.getElementById("d");
+var startQuiz = document.getElementById("start");
+
 // 10 Questions and  4 Answer Array w correct answers
 var javaQuestions = [
    //Initial object structure
@@ -103,22 +111,31 @@ var javaQuestions = [
     }
 ];
 
+// Variables
+var lastQuestion = javaQuestions.length - 1;
 // 90 second timer
 var timeCountdown = 90;
+
+function starTimer(){
 var timer = setInterval(function() {
     timeCountdown--;
     document.getElementById("timer").textContent = timeCountdown;
     if(timeCountdown <= 0)
     clearInterval(timer);
 }, 1000);
-
-
-
-
-
+}
 
 // Quiz function
 function quizElement() {
 
+}
+
+// Correct Answer
+function correctAnswer(){
+    
+}
+
+// Wrong Answer
+function wrongAnswer(){
 
 }
