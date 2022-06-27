@@ -7,6 +7,7 @@ var choiceD = document.getElementById("#d");
 var startQuiz = document.getElementById("start");
 
 // Variables
+var timerInterval;
 var timeCountdown = 75;
 var questionPosition = 0;
 
@@ -78,6 +79,17 @@ questionContainer.addEventListener("click", function(event) {
 
 });
 
+var template = `
+<p>${currentQuestion.question}</p>
+<button class ="answers" data-answer="${currentQuestion.answer[0]}">${currentQuestion.answer[0]}</button>
+<button class ="answers" data-answer="${currentQuestion.answer[1]}">${currentQuestion.answer[1]}</button>
+<button class ="answers" data-answer="${currentQuestion.answer[2]}">${currentQuestion.answer[2]}</button>
+<button class ="answers" data-answer="${currentQuestion.answer[3]}">${currentQuestion.answer[3]}</button>
+`
+document.getElementById("question").innerHTML = template;
+
+
+
 startQuiz.addEventListener("click", function(event) {
 
     var clickElement = event.target;
@@ -106,32 +118,61 @@ function startGame() {
     answerQuestion();
         
 // Display next question
-questionPosition++
 displayCurrentQuestion();
+// IF countdown === 0 then endGame();
+
 }
 
 function answerQuestion(){
     var currentQuestion = questions[questionPosition];
-    // Validate Answer, if wrong then subtract from timeCountdown
+    // Check if the selected answer is wrong
+        // IF the answer is wrong
+            // THEN we need to subtract from countdown
+
     questionPosition++
+
+    // IF I have passed the last question
+        // THEN endGame();
+    // ELSE 
+        // Display the current question
+        // displayCurrentQuestion();
+
 }
 
 
 
 
 
-    //  Display current question
-// HTML Literal will go here for question and answers
+//  Display current question function
+// HTML Literal will inject at this point.
 function displayCurrentQuestion(){
     questions[questionPosition]
 }
 
-// 75 second timer
+
+// End the game function
+function endGame(){
+    // Hide questions area
+    
+    // Show the Record Highscore screen
+    recordHighscore();
+    // Clear the timer interval to stop it from running
+    clearInterval(timerInterval);
+}
+
+// Record the highscore
+function recordHighscore(){
+
+}
+
+// Timer function
 function startTimer(){
-    var timer = setInterval(function() {
+    timerInterval = setInterval(function() {
         timeCountdown--;
         document.getElementById("timer").textContent = timeCountdown;
         if(timeCountdown <= 0)
-        clearInterval(timer);
+        clearInterval(timerInterval);
     }, 1000);
     }
+
+
