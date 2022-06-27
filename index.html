@@ -11,17 +11,19 @@
     
     <header class="container">
         <a href="./highscore.html">view highscore</a>
-        <div id="timer">90</div>
+        <div>Time: <span id="timer">0</span></div>
     </header>
    
-    <button id="start">Start Quiz</button>
     <div>
-        <div class="question">Question</div>
-        
-        <button class ="answers" id="a">a</button>
-        <button class ="answers" id="b">b</button>
-        <button class ="answers" id="c">c</button>
-        <button class ="answers" id="d">d</button>
+        <button id="start">Start Quiz</button>
+       
+        <div id="question">
+        <h1>Question</h1>
+        <button class ="answers" data-answer="a">a</button>
+        <button class ="answers" data-answer="b">b</button>
+        <button class ="answers" data-answer="c">c</button>
+        <button class ="answers" data-answer="d">d</button>
+        </div>  
     </div>
     
     <script src="./assets/script/script.js"></script>
