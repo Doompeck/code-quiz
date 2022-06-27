@@ -1,9 +1,4 @@
 //  selecting html elements
-var question = document.getElementById("#question");
-var choiceA = document.getElementById("#a");
-var choiceB = document.getElementById("#b");
-var choiceC = document.getElementById("#c");
-var choiceD = document.getElementById("#d");
 var startQuiz = document.getElementById("start");
 
 // Variables
@@ -67,6 +62,14 @@ var questions = [
 
 var currentQuestion = questions[questionPosition];
 var questionContainer = document.querySelector('#question');
+// HTML template literal for the questions 
+var template = `
+<p>${currentQuestion.question}</p>
+<button class ="answers" data-answer="${currentQuestion.answer[0]}">${currentQuestion.answer[0]}</button>
+<button class ="answers" data-answer="${currentQuestion.answer[1]}">${currentQuestion.answer[1]}</button>
+<button class ="answers" data-answer="${currentQuestion.answer[2]}">${currentQuestion.answer[2]}</button>
+<button class ="answers" data-answer="${currentQuestion.answer[3]}">${currentQuestion.answer[3]}</button>
+`
 
 questionContainer.addEventListener("click", function(event) {
 
@@ -78,15 +81,6 @@ questionContainer.addEventListener("click", function(event) {
     console.log(answer);
 
 });
-
-var template = `
-<p>${currentQuestion.question}</p>
-<button class ="answers" data-answer="${currentQuestion.answer[0]}">${currentQuestion.answer[0]}</button>
-<button class ="answers" data-answer="${currentQuestion.answer[1]}">${currentQuestion.answer[1]}</button>
-<button class ="answers" data-answer="${currentQuestion.answer[2]}">${currentQuestion.answer[2]}</button>
-<button class ="answers" data-answer="${currentQuestion.answer[3]}">${currentQuestion.answer[3]}</button>
-`
-document.getElementById("question").innerHTML = template;
 
 
 
@@ -100,29 +94,42 @@ startQuiz.addEventListener("click", function(event) {
 
 });
 
-
-
-
-
-
 // Quiz function
 function startGame() {
     //Need to Hide start screen
-    
+    document.getElementById("startScreen").setAttribute("style", "visibility: hidden");
     // Display current question
-
-    
     startTimer();
-    
+    displayCurrentQuestion();
     // Answer Question
     answerQuestion();
         
 // Display next question
 displayCurrentQuestion();
 // IF countdown === 0 then endGame();
-
+if (timerInterval === 0) endGame();
 }
 
+// Timer function
+function startTimer(){
+    timerInterval = setInterval(function() {
+        timeCountdown--;
+        document.getElementById("timer").textContent = timeCountdown;
+        if(timeCountdown <= 0)
+        clearInterval(timerInterval);
+    }, 1000);
+    }
+
+
+//  Display current question function
+// HTML Literal will inject at this point.
+function displayCurrentQuestion(){
+    var currentQuestion = questions[questionPosition];
+    document.getElementById("question").innerHTML = template;
+}
+
+
+// Function once an answer has been selected
 function answerQuestion(){
     var currentQuestion = questions[questionPosition];
     // Check if the selected answer is wrong
@@ -139,17 +146,6 @@ function answerQuestion(){
 
 }
 
-
-
-
-
-//  Display current question function
-// HTML Literal will inject at this point.
-function displayCurrentQuestion(){
-    questions[questionPosition]
-}
-
-
 // End the game function
 function endGame(){
     // Hide questions area
@@ -165,14 +161,5 @@ function recordHighscore(){
 
 }
 
-// Timer function
-function startTimer(){
-    timerInterval = setInterval(function() {
-        timeCountdown--;
-        document.getElementById("timer").textContent = timeCountdown;
-        if(timeCountdown <= 0)
-        clearInterval(timerInterval);
-    }, 1000);
-    }
 
 

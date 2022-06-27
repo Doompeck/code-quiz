@@ -8,7 +8,12 @@ body{
     background-color: white;
 }
 
+#startScreen{
+    visibility: visible;
+}
+
 #start{
+    
     font-size: 1em;
     font-weight: bolder;
     width:200px;
