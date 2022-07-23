@@ -1,30 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Java Quiz</title>
-    <link rel="stylesheet" href="./assets/css/style.css">
-</head>
-<body>
-    
+    <link rel="stylesheet" href="./assets/css/style.css" />
+  </head>
+  <body>
     <header class="container">
-        <a href="./highscore.html">view highscore</a>
-        <div>Time: <span id="timer">0</span></div>
+      <a href="./highscore.html">view highscore</a>
+      <div>Time: <span id="timer">0</span></div>
     </header>
-   
-    <div>
-        <!-- Each will be hidden and revealed by CSS -->
-        <div id="startScreen">
+
+    <main>
+      <!-- Each will be hidden and revealed by CSS -->
+      <section id="start-screen">
         <button id="start">Start Quiz</button>
-        </div>
-        
-        <div id="question"></div>  
+      </section>
+      <section id="quiz-show">
+        <div id="question"></div>
 
         <div id="highscore"></div>
-    </div>
-    
+      </section>
+    </main>
+
     <script src="./assets/script/script.js"></script>
-</body>
+  </body>
 </html>
