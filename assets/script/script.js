@@ -4,7 +4,8 @@ var startQuiz = document.getElementById("start");
 // Variables
 var chosenAnswer;
 var timerInterval;
-var timeCountdown = 75;
+var yourHighscore;
+var timeCountdown = 60;
 var questionPosition = 0;
 
 // 10 Questions and  4 Answer Object Array w correct answers
@@ -102,14 +103,14 @@ var questions = [
 var currentQuestion = questions[questionPosition];
 var questionContainer = document.querySelector("#question");
 
-// HTML template literal for the questions and answers
-// var template = `
-// <p>${currentQuestion.question}</p>
-// <button class ="answers" data-answer="${currentQuestion.answer[0]}">${currentQuestion.answer[0]}</button>
-// <button class ="answers" data-answer="${currentQuestion.answer[1]}">${currentQuestion.answer[1]}</button>
-// <button class ="answers" data-answer="${currentQuestion.answer[2]}">${currentQuestion.answer[2]}</button>
-// <button class ="answers" data-answer="${currentQuestion.answer[3]}">${currentQuestion.answer[3]}</button>
-// `
+// ----Click Event for Start Quiz----
+startQuiz.addEventListener("click", function (event) {
+  var clickElement = event.target;
+
+  if (!clickElement.matches("button")) return;
+
+  startGame();
+});
 
 // ----Click Event for Answers----
 questionContainer.addEventListener("click", function (event) {
@@ -126,15 +127,6 @@ questionContainer.addEventListener("click", function (event) {
   }
 });
 
-// ----Click Event for Start Quiz----
-startQuiz.addEventListener("click", function (event) {
-  var clickElement = event.target;
-
-  if (!clickElement.matches("button")) return;
-
-  startGame();
-});
-
 // ----FUNCTIONS----
 // Quiz function
 function startGame() {
@@ -143,16 +135,11 @@ function startGame() {
   //Hide start screen once button is clicked.
   document
     .getElementById("start-screen")
-    .setAttribute("style", "visibility: hidden");
+    .setAttribute("style", "display: none");
 
   startTimer();
   // Display current question
   displayCurrentQuestion();
-
-  // Display next question
-  // displayCurrentQuestion();
-  // IF countdown === 0 then endGame();
-  if (timerInterval === 0 || currentQuestion > 10) endGame();
 }
 
 // Timer function
@@ -160,18 +147,21 @@ function startTimer() {
   timerInterval = setInterval(function () {
     timeCountdown--;
     document.getElementById("timer").textContent = timeCountdown;
-    if (timeCountdown <= 0) clearInterval(timerInterval);
   }, 1000);
 }
 
 function displayCurrentQuestion() {
+  // console.log(questionPosition);
+  if (questionPosition > 9 || timeCountdown <= 0) endGame();
   currentQuestion = questions[questionPosition];
   var template = `
-<p>${currentQuestion.question}</p>
+  <p>${currentQuestion.question}</p>
+  <div class="stack">
 <button class ="answers" data-answer="${currentQuestion.answer[0]}">${currentQuestion.answer[0]}</button>
 <button class ="answers" data-answer="${currentQuestion.answer[1]}">${currentQuestion.answer[1]}</button>
 <button class ="answers" data-answer="${currentQuestion.answer[2]}">${currentQuestion.answer[2]}</button>
 <button class ="answers" data-answer="${currentQuestion.answer[3]}">${currentQuestion.answer[3]}</button>
+</div> 
 `;
   document.getElementById("question").innerHTML = template;
 }
@@ -181,52 +171,86 @@ function answerQuestion() {
   if (chosenAnswer === currentQuestion.correctAnswer) {
     // console.log(chosenAnswer);
     // console.log(currentQuestion.correctAnswer);
-    console.log("Right Answer");
+    // console.log("Right Answer");
     questionPosition++;
-    console.log(questionPosition);
+    // console.log(questionPosition);
     displayCurrentQuestion();
   } else {
     // console.log(chosenAnswer);
     // console.log(currentQuestion.correctAnswer);
-    console.log("Wrong Answer");
-    timerInterval--;
+    // console.log("Wrong Answer");
+    timeCountdown--;
+    document.getElementById("timer").textContent = timeCountdown;
     questionPosition++;
     displayCurrentQuestion();
   }
-  // Check if the selected answer is wrong
-  // IF the answer is wrong
-  // THEN we need to subtract from countdown
-
-  // IF I have passed the last question
-  // THEN endGame();
-  // ELSE
-  // Display the current question
-  // displayCurrentQuestion();
 }
 
 // End the game function
 function endGame() {
+  questionPosition = 0;
+  document.getElementById("question").innerHTML = "";
   // Hide questions area
-  document
-    .getElementById("quiz-show")
-    .setAttribute("style", "visibility: hidden");
+  document.getElementById("question").setAttribute("style", "display: none");
+
+  document.getElementById("highscore").setAttribute("style", "display: inline");
   // Show Start Screen again?
-  document
-    .getElementById("start-screen")
-    .setAttribute("style", "visibility: visible");
+  // document
+  //   .getElementById("start-screen")
+  //   .setAttribute("style", "visibility: visible");
 
   // Show the Record Highscore screen
-  recordHighscore();
+  stopTimer();
+  saveHighscore();
   // Clear the timer interval to stop it from running
   clearInterval(timerInterval);
 }
 
-// Record the highscore
-function recordHighscore() {}
+// Record the Stop the clock and record the highscore
+function stopTimer() {
+  yourHighscore = timeCountdown;
+  clearInterval(timerInterval);
+  timerInterval = null;
+}
 
 // Display the Highscores
-function displayHighscores() {
-  document
-    .getElementById("highscore")
-    .setAttribute("style", "visibility: visible");
+function saveHighscore() {
+  var template = `<h1>Your Final Score is <span id="final-score">${yourHighscore}</span></h1>
+<span>Enter your initials to submit your highscore</span>
+ <input placeholder="Your Initials" id="initials"></input>
+ <button id="highscorebtn">Submit</button>`;
+
+  document.getElementById("highscore").innerHTML = template;
+  var scoreBtnEl = document.getElementById("highscorebtn");
+  var scoreEl = document.getElementById("initials");
+
+  // ----Click Event for Score Submission----
+  scoreBtnEl.addEventListener("click", function (event) {
+    var clickElement = event.target;
+    // console.log(scoreEl.value);
+    if (!clickElement.matches("button")) {
+      return;
+    } else {
+      var storedArray = JSON.parse(localStorage.getItem("score-and-initials"));
+
+      var scoreAndInitials = {
+        initials: scoreEl.value,
+        score: yourHighscore,
+      };
+      if (storedArray === null) {
+        storedArray = [scoreAndInitials];
+      } else if (
+        !storedArray.some((item) => item.initials === scoreAndInitials.initials)
+      ) {
+        storedArray.push(scoreAndInitials);
+      }
+      localStorage.setItem("score-and-initials", JSON.stringify(storedArray));
+      document
+      .getElementById("start-screen")
+      .setAttribute("style", "display: flex");
+
+      document.getElementById("highscore").setAttribute("style", "display: none");
+      event.preventDefault();
+    }
+  });
 }

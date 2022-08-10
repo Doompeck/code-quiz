@@ -15,16 +15,25 @@
 
     <main>
       <!-- Each will be hidden and revealed by CSS -->
-      <section id="start-screen">
+      <section id="start-screen" class="box">
         <button id="start">Start Quiz</button>
       </section>
-      <section id="quiz-show">
-        <div id="question"></div>
+      <section id="quiz-show" class="container">
+        <div id="question" class="stack">
+          <!-- <p>${currentQuestion.question}</p>
+          <div class="stack">
+<button class ="answers" data-answer="${currentQuestion.answer[0]}">${currentQuestion.answer[0]}</button>
+<button class ="answers" data-answer="${currentQuestion.answer[1]}">${currentQuestion.answer[1]}</button>
+<button class ="answers" data-answer="${currentQuestion.answer[2]}">${currentQuestion.answer[2]}</button>
+<button class ="answers" data-answer="${currentQuestion.answer[3]}">${currentQuestion.answer[3]}</button>
+</div>  -->
+</div>
 
         <div id="highscore"></div>
       </section>
     </main>
 
     <script src="./assets/script/script.js"></script>
+    <!-- <script src="./assets/script/viewHighscore.js"></script> -->
   </body>
 </html>
